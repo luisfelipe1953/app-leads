@@ -1,0 +1,422 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OMC Leads API",
+        "description": "API REST para gestión de leads de One Million Copy SAS. Autenticación via header X-API-KEY.",
+        "contact": {
+            "email": "admin@omc.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/api/leads": {
+            "get": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Listar leads con paginación y filtros",
+                "operationId": "cf432797d721104851e99238ac60a81e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    },
+                    {
+                        "name": "fuente",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "instagram",
+                                "facebook",
+                                "landing_page",
+                                "referido",
+                                "otro"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "fecha_fin",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de leads paginada"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Registrar un nuevo lead",
+                "operationId": "bc7019fff22a88cad209d84aab97322d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "email",
+                                    "fuente"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Juan Pérez"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "juan@example.com"
+                                    },
+                                    "telefono": {
+                                        "type": "string",
+                                        "example": "+573001234567"
+                                    },
+                                    "fuente": {
+                                        "type": "string",
+                                        "enum": [
+                                            "instagram",
+                                            "facebook",
+                                            "landing_page",
+                                            "referido",
+                                            "otro"
+                                        ]
+                                    },
+                                    "producto_interes": {
+                                        "type": "string",
+                                        "example": "Curso de Marketing"
+                                    },
+                                    "presupuesto": {
+                                        "type": "number",
+                                        "example": 500
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Lead creado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/leads/stats": {
+            "get": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Estadísticas de leads",
+                "operationId": "81ea2139df36effeb7caeb14371a382c",
+                "responses": {
+                    "200": {
+                        "description": "Estadísticas generales"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/leads/{id}": {
+            "get": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Obtener un lead por ID",
+                "operationId": "6426d81a2050c02e20aef8fcdc853bb7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lead encontrado"
+                    },
+                    "404": {
+                        "description": "Lead no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Eliminar un lead (soft delete)",
+                "operationId": "972c87158c8eeb7b5ebefd52d273cd0a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lead eliminado"
+                    },
+                    "404": {
+                        "description": "Lead no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Actualizar un lead",
+                "operationId": "b4762574a482687ce7361b085fc5dd2c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string"
+                                    },
+                                    "telefono": {
+                                        "type": "string"
+                                    },
+                                    "producto_interes": {
+                                        "type": "string"
+                                    },
+                                    "presupuesto": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Lead actualizado"
+                    },
+                    "404": {
+                        "description": "Lead no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/leads/ai/summary": {
+            "post": {
+                "tags": [
+                    "IA"
+                ],
+                "summary": "Generar resumen ejecutivo con IA (OpenAI)",
+                "operationId": "4d53845d0ad694a7531ef0ef4bc49e68",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "fuente": {
+                                        "type": "string",
+                                        "enum": [
+                                            "instagram",
+                                            "facebook",
+                                            "landing_page",
+                                            "referido",
+                                            "otro"
+                                        ]
+                                    },
+                                    "fecha_inicio": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-01-01"
+                                    },
+                                    "fecha_fin": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-12-31"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resumen generado por IA"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/api/leads/webhook": {
+            "post": {
+                "tags": [
+                    "Webhook"
+                ],
+                "summary": "Webhook simulando integración Typeform",
+                "operationId": "891f9e8cc96796811aa02ffae9d5f46c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "form_response": {
+                                        "properties": {
+                                            "answers": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "field": {
+                                                            "properties": {
+                                                                "ref": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "text": {
+                                                            "type": "string"
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "number": {
+                                                            "type": "number"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Lead creado desde webhook"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiKey": {
+                "type": "apiKey",
+                "description": "API Key requerida. Configura APP_API_KEY en .env",
+                "name": "X-API-KEY",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Leads",
+            "description": "Leads"
+        },
+        {
+            "name": "IA",
+            "description": "IA"
+        },
+        {
+            "name": "Webhook",
+            "description": "Webhook"
+        }
+    ]
+}
