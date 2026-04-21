@@ -7,7 +7,7 @@ RUN apk add --no-cache \
     libzip-dev \
     zip \
     unzip \
-    && docker-php-ext-install pdo pdo_mysql zip gd
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip gd
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
