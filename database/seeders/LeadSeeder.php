@@ -125,8 +125,6 @@ class LeadSeeder extends Seeder
             Lead::create($lead);
         }
 
-        Lead::factory(5)->create();
-
         $this->command->info('✓ Se crearon ' . Lead::count() . ' leads de ejemplo.');
     }
 }
