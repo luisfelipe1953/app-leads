@@ -1,0 +1,189 @@
+{
+  "info": {
+    "name": "OMC Leads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000" },
+    { "key": "api_key", "value": "omc-secret-key-change-in-production" }
+  ],
+  "item": [
+    {
+      "name": "Leads",
+      "item": [
+        {
+          "name": "Listar leads",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-KEY", "value": "{{api_key}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/leads?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leads"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "fuente", "value": "instagram", "disabled": true },
+                { "key": "fecha_inicio", "value": "2024-01-01", "disabled": true },
+                { "key": "fecha_fin", "value": "2024-12-31", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear lead",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-KEY", "value": "{{api_key}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"email\": \"juan@example.com\",\n  \"telefono\": \"+573001234567\",\n  \"fuente\": \"instagram\",\n  \"producto_interes\": \"Curso de Marketing Digital\",\n  \"presupuesto\": 500\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/leads", "host": ["{{base_url}}"], "path": ["api", "leads"] }
+          }
+        },
+        {
+          "name": "Obtener lead por ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-KEY", "value": "{{api_key}}" }],
+            "url": { "raw": "{{base_url}}/api/leads/1", "host": ["{{base_url}}"], "path": ["api", "leads", "1"] }
+          }
+        },
+        {
+          "name": "Actualizar lead",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "X-API-KEY", "value": "{{api_key}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Luis Felipe\",\n  \"telefono\": \"+573009999999\",\n  \"presupuesto\": 1500\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/leads/1", "host": ["{{base_url}}"], "path": ["api", "leads", "1"] }
+          }
+        },
+        {
+          "name": "Eliminar lead (soft delete)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "X-API-KEY", "value": "{{api_key}}" }],
+            "url": { "raw": "{{base_url}}/api/leads/1", "host": ["{{base_url}}"], "path": ["api", "leads", "1"] }
+          }
+        },
+        {
+          "name": "Estadísticas",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-KEY", "value": "{{api_key}}" }],
+            "url": { "raw": "{{base_url}}/api/leads/stats", "host": ["{{base_url}}"], "path": ["api", "leads", "stats"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "IA",
+      "item": [
+        {
+          "name": "Resumen IA (todos los leads)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-KEY", "value": "{{api_key}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{base_url}}/api/leads/ai/summary", "host": ["{{base_url}}"], "path": ["api", "leads", "ai", "summary"] }
+          }
+        },
+        {
+          "name": "Resumen IA (filtrado por fuente)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-KEY", "value": "{{api_key}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fuente\": \"instagram\",\n  \"fecha_inicio\": \"2024-01-01\",\n  \"fecha_fin\": \"2026-12-31\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/leads/ai/summary", "host": ["{{base_url}}"], "path": ["api", "leads", "ai", "summary"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhook",
+      "item": [
+        {
+          "name": "Webhook Typeform",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"form_response\": {\n    \"answers\": [\n      {\"field\": {\"ref\": \"nombre\"}, \"text\": \"María López\"},\n      {\"field\": {\"ref\": \"email\"}, \"email\": \"maria@example.com\"},\n      {\"field\": {\"ref\": \"telefono\"}, \"text\": \"+573001234567\"},\n      {\"field\": {\"ref\": \"fuente\"}, \"text\": \"landing_page\"},\n      {\"field\": {\"ref\": \"presupuesto\"}, \"number\": 800}\n    ]\n  }\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/leads/webhook", "host": ["{{base_url}}"], "path": ["api", "leads", "webhook"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Validaciones (errores esperados)",
+      "item": [
+        {
+          "name": "Email duplicado → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-KEY", "value": "{{api_key}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Duplicado\",\n  \"email\": \"maria.gonzalez@example.com\",\n  \"fuente\": \"facebook\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/leads", "host": ["{{base_url}}"], "path": ["api", "leads"] }
+          }
+        },
+        {
+          "name": "Sin API Key → 401",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/api/leads", "host": ["{{base_url}}"], "path": ["api", "leads"] }
+          }
+        },
+        {
+          "name": "Fuente inválida → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-API-KEY", "value": "{{api_key}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test\",\n  \"email\": \"test@test.com\",\n  \"fuente\": \"tiktok\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/leads", "host": ["{{base_url}}"], "path": ["api", "leads"] }
+          }
+        },
+        {
+          "name": "Lead inexistente → 404",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "X-API-KEY", "value": "{{api_key}}" }],
+            "url": { "raw": "{{base_url}}/api/leads/99999", "host": ["{{base_url}}"], "path": ["api", "leads", "99999"] }
+          }
+        }
+      ]
+    }
+  ]
+}
