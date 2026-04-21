@@ -5,6 +5,7 @@ RUN apk add --no-cache \
     curl \
     libpng-dev \
     libzip-dev \
+    libpq-dev \
     zip \
     unzip \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip gd
